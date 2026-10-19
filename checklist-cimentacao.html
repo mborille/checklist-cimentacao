@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Checklist de Cimentação</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: foto grande à esquerda, painel de medição à direita; empilha no celular.
+   Linguagem: Apple (tipografia do sistema, superfícies agrupadas, controles segmentados, azul do sistema). */
+:root {
+  --bg: #f5f5f7;
+  --surface: #ffffff;
+  --surface-2: #f2f2f7;
+  --line: rgba(60, 60, 67, 0.16);
+  --fg: #1d1d1f;
+  --fg-dim: #6e6e73;
+  --accent: #0071e3;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(0, 113, 227, 0.1);
+  --seg-thumb: #ffffff;
+  --card-c: #8e8e93;
+  --tooth-c: #ff9f0a;
+  --ref-c: #30b0c7;
+  --ok: #248a3d;
+  --warn: #b25000;
+  --bad: #d70015;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 28px rgba(0, 0, 0, 0.06);
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --font-data: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #000000; --surface: #1c1c1e; --surface-2: #2c2c2e; --line: rgba(84, 84, 88, 0.55);
+    --fg: #f5f5f7; --fg-dim: #98989d; --accent: #0a84ff; --accent-ink: #ffffff; --accent-soft: rgba(10, 132, 255, 0.2);
+    --seg-thumb: #636366; --card-c: #aeaeb2; --tooth-c: #ff9f0a; --ref-c: #64d2ff;
+    --ok: #30d158; --warn: #ff9f0a; --bad: #ff453a; --shadow: none;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #000000; --surface: #1c1c1e; --surface-2: #2c2c2e; --line: rgba(84, 84, 88, 0.55);
+  --fg: #f5f5f7; --fg-dim: #98989d; --accent: #0a84ff; --accent-ink: #ffffff; --accent-soft: rgba(10, 132, 255, 0.2);
+  --seg-thumb: #636366; --card-c: #aeaeb2; --tooth-c: #ff9f0a; --ref-c: #64d2ff;
+  --ok: #30d158; --warn: #ff9f0a; --bad: #ff453a; --shadow: none;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 15px/1.47 var(--font-body); -webkit-font-smoothing: antialiased;
+  padding-block: 40px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1160px; margin: 0 auto; display: grid; gap: 24px; }
+header h1 { font: 700 40px/1.08 var(--font-display); letter-spacing: -0.022em; margin: 0 0 10px; text-wrap: balance; }
+header p { margin: 0; color: var(--fg-dim); font-size: 17px; line-height: 1.47; max-width: 56ch; }
+.example-banner {
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  padding: 12px 16px; border-radius: 14px; color: var(--fg);
+  background: var(--accent-soft); font-size: 14px;
+}
+.example-banner[hidden] { display: none; }
+.app { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 880px) { .app { grid-template-columns: minmax(0, 1fr); } header h1 { font-size: 34px; } }
+.col { display: grid; gap: 20px; min-width: 0; }
+.panel { background: var(--surface); border-radius: 20px; padding: 22px; min-width: 0; box-shadow: var(--shadow); }
+.panel h2 { font: 600 19px/1.2 var(--font-display); letter-spacing: -0.012em; margin: 0 0 16px; color: var(--fg); }
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; }
+button, .btn, select, input[type="text"], input[type="number"] {
+  font: inherit; color: var(--fg); background: var(--surface-2); border: 0;
+  border-radius: 10px; padding: 8px 14px; min-height: 40px;
+}
+button, .btn {
+  cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--accent-soft); color: var(--accent); font-weight: 500; border-radius: 980px; padding: 8px 18px;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+button:hover, .btn:hover { opacity: 0.82; }
+button:active, .btn:active { transform: scale(0.98); }
+button:focus-visible, .btn:focus-within, input:focus-visible, select:focus-visible, canvas:focus-visible, summary:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent) 45%, transparent); outline-offset: 1px;
+}
+button.primary { background: var(--accent); color: var(--accent-ink); font-weight: 600; }
+.seg { display: flex; gap: 2px; padding: 2px; margin-bottom: 14px; background: var(--surface-2); border-radius: 11px; }
+.seg button {
+  flex: 1 1 0; min-width: 0; background: transparent; color: var(--fg); border-radius: 9px; padding: 7px 8px;
+  font-size: 14px; font-weight: 500; min-height: 34px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.seg button[aria-pressed="true"] { background: var(--seg-thumb); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14), 0 0 0 0.5px rgba(0, 0, 0, 0.04); font-weight: 600; }
+.seg button:hover { opacity: 1; }
+.dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.dot.card { background: var(--card-c); } .dot.tooth { background: var(--tooth-c); } .dot.ref { background: var(--ref-c); }
+.step { font-size: 12px; color: var(--fg-dim); font-weight: 500; }
+.stage { position: relative; background: #000; border-radius: 14px; overflow: hidden; }
+canvas#view { display: block; width: 100%; touch-action: none; cursor: crosshair; }
+.hint { margin: 12px 2px 0; color: var(--fg-dim); font-size: 14px; min-height: 20px; }
+.tips summary { cursor: pointer; font: 600 17px/1.3 var(--font-display); letter-spacing: -0.01em; list-style: none; display: flex; justify-content: space-between; align-items: center; border-radius: 8px; }
+.tips summary::-webkit-details-marker { display: none; }
+.tips summary::after { content: "›"; font-size: 24px; color: var(--fg-dim); transition: transform 0.2s ease; }
+.tips details[open] summary::after { transform: rotate(90deg); }
+.tips ul { margin: 12px 0 0; padding-left: 18px; color: var(--fg-dim); font-size: 15px; }
+.tips li { margin: 5px 0; }
+
+.swatches { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.sw { border-radius: 14px; overflow: hidden; background: var(--surface-2); }
+.sw .chip { height: 96px; background: var(--surface-2); }
+.sw .cap { padding: 8px 12px; font-size: 13px; color: var(--fg-dim); display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.sw .cap b { color: var(--fg); font-family: var(--font-data); font-weight: 500; font-size: 12px; }
+.de-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 20px 0 10px; }
+.de-num { font: 600 60px/1 var(--font-display); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.de-unit { color: var(--fg-dim); font-size: 15px; font-weight: 500; }
+.pill { padding: 4px 12px; border-radius: 99px; font-size: 13px; font-weight: 600; background: color-mix(in srgb, currentColor 14%, transparent); }
+.pill.ok { color: var(--ok); } .pill.warn { color: var(--warn); } .pill.bad { color: var(--bad); } .pill.none { color: var(--fg-dim); }
+.scale { position: relative; height: 6px; background: var(--surface-2); border-radius: 3px; margin: 8px 0 26px; }
+.scale .fill { position: absolute; inset: 0 auto 0 0; border-radius: 3px; background: var(--fg-dim); }
+.scale .fill.ok { background: var(--ok); } .scale .fill.warn { background: var(--warn); } .scale .fill.bad { background: var(--bad); }
+.scale .tick { position: absolute; top: -3px; bottom: -3px; width: 2px; border-radius: 1px; background: var(--fg); opacity: 0.35; }
+.scale .tick span { position: absolute; top: 18px; left: 50%; transform: translateX(-50%); font: 12px var(--font-body); color: var(--fg-dim); white-space: nowrap; }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: right; padding: 9px 4px; border-bottom: 0.5px solid var(--line); white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+th:first-child, td:first-child { text-align: left; }
+th { font: 500 12px var(--font-body); color: var(--fg-dim); }
+td { font: 15px var(--font-display); }
+td:first-child { color: var(--fg-dim); font-size: 14px; }
+ul.warns { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 8px; }
+ul.warns li { padding: 10px 12px 10px 34px; position: relative; background: var(--surface-2); font-size: 14px; border-radius: 12px; }
+ul.warns li::before { content: ""; position: absolute; left: 14px; top: 17px; width: 8px; height: 8px; border-radius: 50%; background: var(--warn); }
+ul.warns li.good::before { background: var(--ok); }
+.mono { font-family: var(--font-data); font-size: 12px; color: var(--fg-dim); }
+.fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.fields label, .field { display: grid; gap: 6px; font-size: 13px; color: var(--fg-dim); }
+.fields input, .field input, .field select { width: 100%; color: var(--fg); font-size: 16px; }
+.row { display: flex; gap: 12px; flex-wrap: wrap; align-items: end; }
+.row > * { min-width: 0; }
+input[type="range"] { width: 100%; accent-color: var(--accent); min-height: 40px; background: transparent; padding: 0; }
+input[type="checkbox"] { accent-color: var(--accent); width: 18px; height: 18px; }
+input[type="file"] { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.note { color: var(--fg-dim); font-size: 13px; line-height: 1.45; margin: 12px 0 0; }
+textarea#csvBox { width: 100%; min-height: 92px; font: 12px/1.45 var(--font-data); color: var(--fg); background: var(--surface-2); border: 0; border-radius: 12px; padding: 12px; resize: vertical; margin-top: 12px; }
+figure.report { margin: 16px 0 0; }
+figure.report img { width: 100%; max-width: 420px; height: auto; border-radius: 12px; display: block; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12); }
+figure.report figcaption { color: var(--fg-dim); font-size: 13px; margin-top: 8px; }
+.empty { color: var(--fg-dim); font-size: 14px; margin: 0; }
+@media (prefers-reduced-motion: no-preference) { .scale .fill { transition: width 0.3s ease; } }
+@media (prefers-reduced-motion: reduce) { button, .btn, .tips summary::after { transition: none; } }
+
+.banner-warn { display: flex; gap: 10px; align-items: flex-start; padding: 12px 16px; border-radius: 14px; background: color-mix(in srgb, var(--warn) 14%, transparent); font-size: 14px; }
+.banner-warn::before { content: ""; flex: none; width: 8px; height: 8px; margin-top: 7px; border-radius: 50%; background: var(--warn); }
+.topgrid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 880px) { .topgrid { grid-template-columns: minmax(0, 1fr); } }
+.prog { height: 6px; border-radius: 3px; background: var(--surface-2); overflow: hidden; margin: 6px 0 4px; }
+.prog > i { display: block; height: 100%; background: var(--accent); border-radius: 3px; width: 0; transition: width 0.3s ease; }
+.proglabel { display: flex; justify-content: space-between; color: var(--fg-dim); font-size: 13px; }
+.phaselabel { font-size: 13px; font-weight: 600; color: var(--accent); letter-spacing: 0.02em; text-transform: uppercase; margin: 0 0 6px; }
+.cur h3 { font: 700 30px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0 0 8px; text-wrap: balance; }
+.cur .detail { color: var(--fg-dim); font-size: 17px; line-height: 1.45; margin: 0 0 16px; max-width: 52ch; }
+.timerbox { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin: 6px 0 16px; }
+.ring { position: relative; width: 132px; height: 132px; flex: none; }
+.ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring circle { fill: none; stroke-width: 9; }
+.ring .bg { stroke: var(--surface-2); }
+.ring .fg { stroke: var(--accent); stroke-linecap: round; transition: stroke-dashoffset 0.2s linear; }
+.ring.end .fg { stroke: var(--ok); }
+.ring .num { position: absolute; inset: 0; display: grid; place-items: center; font: 600 32px var(--font-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.btnrow { display: flex; gap: 10px; flex-wrap: wrap; }
+button.big { min-height: 48px; padding: 10px 24px; font-size: 17px; }
+button.ghost { background: var(--surface-2); color: var(--fg); }
+.teeth { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
+.tooth { min-width: 48px; min-height: 40px; padding: 6px 12px; background: var(--surface-2); color: var(--fg); font-weight: 600; font-variant-numeric: tabular-nums; }
+.tooth[aria-pressed="true"] { background: var(--ok); color: #fff; }
+.list { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.phasehead { font: 600 13px var(--font-body); color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.06em; margin: 18px 0 6px; }
+.phasehead:first-child { margin-top: 0; }
+.row-step { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 6px; border-radius: 12px; }
+.row-step.current { background: var(--accent-soft); }
+.row-step .tt { font-weight: 500; }
+.row-step .dd { color: var(--fg-dim); font-size: 13px; }
+.row-step.done .tt { color: var(--fg-dim); text-decoration: line-through; }
+.check { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--line); background: transparent; padding: 0; min-height: 26px; display: grid; place-items: center; color: transparent; }
+.check[aria-pressed="true"] { background: var(--ok); border-color: var(--ok); color: #fff; }
+.check svg { width: 14px; height: 14px; }
+.secs { font: 13px var(--font-data); color: var(--fg-dim); white-space: nowrap; }
+.running { display: grid; gap: 8px; }
+.running .it { display: flex; justify-content: space-between; gap: 10px; padding: 10px 14px; border-radius: 12px; background: var(--surface-2); font-variant-numeric: tabular-nums; }
+.running .it b { font-family: var(--font-display); font-size: 17px; }
+.editrow { display: grid; grid-template-columns: minmax(0, 1fr) 80px; gap: 8px; padding: 10px 0; border-bottom: 0.5px solid var(--line); }
+.editrow .full { grid-column: 1 / -1; }
+.editrow input[type="text"], .editrow input[type="number"] { width: 100%; font-size: 15px; }
+.editrow .tools { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; font-size: 13px; color: var(--fg-dim); }
+.editrow .tools button { min-height: 32px; padding: 4px 12px; font-size: 13px; }
+textarea.json { width: 100%; min-height: 120px; font: 12px/1.45 var(--font-data); color: var(--fg); background: var(--surface-2); border: 0; border-radius: 12px; padding: 12px; margin-top: 10px; resize: vertical; }
+.endflash { animation: flash 0.9s ease 2; }
+@keyframes flash { 50% { background: color-mix(in srgb, var(--ok) 25%, transparent); } }
+@media (prefers-reduced-motion: reduce) { .endflash { animation: none; } .prog > i, .ring .fg { transition: none; } }
+.done-card { text-align: center; padding: 28px 12px; }
+.done-card h3 { font: 700 28px var(--font-display); margin: 0 0 6px; }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Checklist de Cimentação</h1>
+    <p>Roteiro de cimentação adesiva de lentes de contato dentais, com cronômetro por etapa e registro do que foi feito em cada dente.</p>
+  </header>
+
+  <div class="banner-warn" role="note">
+    <span><strong>Valores de partida, não são um protocolo validado.</strong> Os tempos e materiais abaixo são referências gerais. Revise cada etapa com o seu protocolo e com a bula dos produtos antes de usar em paciente. Tudo é editável em Editar protocolo.</span>
+  </div>
+
+  <section class="panel" aria-labelledby="h-caso">
+    <h2 id="h-caso">Caso</h2>
+    <div class="fields" style="grid-template-columns: 1fr 1fr">
+      <label for="caso">Caso ou paciente<input id="caso" type="text" autocomplete="off" placeholder="Caso 014"></label>
+      <label for="dentes">Dentes (separe por vírgula)<input id="dentes" type="text" autocomplete="off" value="12, 11, 21, 22" inputmode="text"></label>
+    </div>
+  </section>
+
+  <div class="topgrid">
+    <section class="panel cur" id="curPanel" aria-live="polite"></section>
+    <div class="col">
+      <section class="panel" aria-labelledby="h-and">
+        <h2 id="h-and">Andamento</h2>
+        <div class="proglabel"><span id="progText"></span><span id="progPct"></span></div>
+        <div class="prog"><i id="progBar"></i></div>
+        <div class="running" id="running" style="margin-top:14px"></div>
+        <div class="btnrow" style="margin-top:14px">
+          <button type="button" id="btnCopy">Copiar registro</button>
+          <button type="button" class="ghost" id="btnReset">Reiniciar caso</button>
+        </div>
+        <textarea id="logBox" class="json" readonly hidden aria-label="Registro da cimentação"></textarea>
+      </section>
+    </div>
+  </div>
+
+  <section class="panel" aria-labelledby="h-todas">
+    <h2 id="h-todas">Todas as etapas</h2>
+    <ol class="list" id="allSteps"></ol>
+  </section>
+
+  <section class="panel" aria-labelledby="h-edit">
+    <h2 id="h-edit">Protocolo</h2>
+    <div class="btnrow">
+      <button type="button" id="btnEdit" aria-pressed="false">Editar protocolo</button>
+      <button type="button" class="ghost" id="btnDefault">Voltar aos valores de partida</button>
+    </div>
+    <p class="note">As alterações ficam salvas neste navegador. Para levar o seu protocolo para outro aparelho, use o texto de exportação abaixo.</p>
+    <div id="editor" hidden></div>
+    <div id="io" hidden>
+      <div class="btnrow" style="margin-top:12px">
+        <button type="button" id="btnExport">Mostrar texto de exportação</button>
+        <button type="button" id="btnImport">Aplicar texto colado</button>
+      </div>
+      <textarea id="json" class="json" aria-label="Protocolo em JSON" spellcheck="false"></textarea>
+    </div>
+  </section>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var KEY = "cimentacao.protocolo.v1";
+  var PHASES = [
+    { id: "peca", label: "Peça" }, { id: "dente", label: "Dente" },
+    { id: "cimentacao", label: "Cimentação" }, { id: "final", label: "Finalização" }
+  ];
+  var DEFAULT = [
+    { id: "p1", phase: "peca", title: "Prova das peças e conferência", detail: "Confira adaptação, pontos de contato e cor com pasta ou gel de prova.", sec: 0, tooth: true },
+    { id: "p2", phase: "peca", title: "Condicionamento ácido da cerâmica", detail: "Ácido fluorídrico 5% em dissilicato de lítio. O tempo depende da cerâmica e do fabricante.", sec: 20, tooth: true },
+    { id: "p3", phase: "peca", title: "Lavagem e secagem", detail: "Enxágue abundante com jato de água e secagem com ar livre de óleo.", sec: 0, tooth: false },
+    { id: "p4", phase: "peca", title: "Limpeza pós-condicionamento", detail: "Ultrassom em água destilada ou álcool para remover os resíduos do condicionamento.", sec: 300, tooth: false },
+    { id: "p5", phase: "peca", title: "Silanização", detail: "Aplicar o silano, aguardar e secar com ar morno.", sec: 60, tooth: true },
+    { id: "p6", phase: "peca", title: "Adesivo na peça", detail: "Aplicar o adesivo. Fotopolimerizar ou não é decisão do seu protocolo: ajuste este passo.", sec: 0, tooth: true },
+    { id: "d1", phase: "dente", title: "Isolamento e profilaxia", detail: "Isole o campo e limpe o esmalte com pasta de pedra-pomes e água ou jato de bicarbonato.", sec: 0, tooth: false },
+    { id: "d2", phase: "dente", title: "Condicionamento do esmalte", detail: "Ácido fosfórico 37% no esmalte.", sec: 30, tooth: true },
+    { id: "d3", phase: "dente", title: "Condicionamento da dentina, se exposta", detail: "Ácido fosfórico 37% apenas sobre a dentina exposta.", sec: 15, tooth: true },
+    { id: "d4", phase: "dente", title: "Lavagem e secagem do dente", detail: "Enxágue abundante e secagem sem ressecar a dentina.", sec: 0, tooth: true },
+    { id: "d5", phase: "dente", title: "Adesivo no dente: aplicação", detail: "Aplicar com fricção e volatilizar o solvente com jato de ar suave.", sec: 20, tooth: true },
+    { id: "d6", phase: "dente", title: "Adesivo no dente: fotopolimerização", detail: "Siga a instrução do fabricante do adesivo.", sec: 20, tooth: true },
+    { id: "c1", phase: "cimentacao", title: "Cimento ou resina na peça", detail: "Cimento resinoso ou resina pré-aquecida, conforme a sua escolha. Com resina aquecida, trabalhe sem demora.", sec: 0, tooth: true },
+    { id: "c2", phase: "cimentacao", title: "Assentamento e remoção de excessos", detail: "Assente com pressão leve e remova os excessos antes de polimerizar.", sec: 0, tooth: true },
+    { id: "c3", phase: "cimentacao", title: "Pré-polimerização rápida", detail: "Fotopolimerização curta para fixar a peça e facilitar a limpeza dos excessos.", sec: 3, tooth: true },
+    { id: "c4", phase: "cimentacao", title: "Gel de glicerina nas margens", detail: "Bloqueia o oxigênio e evita a camada inibida na interface.", sec: 0, tooth: false },
+    { id: "c5", phase: "cimentacao", title: "Fotopolimerização final", detail: "Por face, vestibular e palatina, com a ponta bem posicionada.", sec: 40, tooth: true },
+    { id: "f1", phase: "final", title: "Acabamento das margens", detail: "Remoção dos excessos remanescentes com lâmina e tiras de acabamento.", sec: 0, tooth: false },
+    { id: "f2", phase: "final", title: "Ajuste oclusal", detail: "Papel articular em máxima intercuspidação e nos movimentos excursivos.", sec: 0, tooth: false },
+    { id: "f3", phase: "final", title: "Polimento", detail: "Polimento das margens e das áreas ajustadas.", sec: 0, tooth: false },
+    { id: "f4", phase: "final", title: "Fotos finais e orientações", detail: "Registre fotografias e oriente sobre higiene e controle.", sec: 0, tooth: false }
+  ];
+  var steps = load() || clone(DEFAULT);
+  var prog = {};      // id -> {done, at, teeth:{}}
+  var timers = {};    // id -> {st:'idle|run|pause|end', endAt, left}
+  var editing = false, audio = null, lock = null;
+  var $ = function (id) { return document.getElementById(id); };
+
+  function clone(o) { return JSON.parse(JSON.stringify(o)); }
+  function load() { try { var s = localStorage.getItem(KEY); if (s) { var j = JSON.parse(s); if (Array.isArray(j) && j.length) return j; } } catch (e) {} return null; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(steps)); } catch (e) {} }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function teeth() { return $("dentes").value.split(/[,;\s]+/).map(function (t) { return t.trim(); }).filter(Boolean); }
+  function fmt(sec) { sec = Math.max(0, Math.ceil(sec)); var m = Math.floor(sec / 60), s = sec % 60; return (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s; }
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  function hhmm(t) { var d = new Date(t); return pad(d.getHours()) + ":" + pad(d.getMinutes()); }
+  function P(id) { return prog[id] || (prog[id] = { done: false, at: 0, teeth: {} }); }
+  function T(id) { return timers[id] || (timers[id] = { st: "idle", endAt: 0, left: 0 }); }
+  function secOf(s) { return Math.max(0, parseInt(s.sec, 10) || 0); }
+  function curIndex() { for (var i = 0; i < steps.length; i++) if (!P(steps[i].id).done) return i; return -1; }
+  function stepDone(s) {
+    var p = P(s.id); if (!p.done) return false; return true;
+  }
+
+  // ---------- Áudio, vibração e tela ligada ----------
+  function ensureAudio() { try { audio = audio || new (window.AudioContext || window.webkitAudioContext)(); if (audio.state === "suspended") audio.resume(); } catch (e) {} }
+  function beep() {
+    try {
+      ensureAudio(); if (!audio) return;
+      [0, 0.3, 0.6].forEach(function (d) {
+        var o = audio.createOscillator(), g = audio.createGain(), t = audio.currentTime + d;
+        o.type = "sine"; o.frequency.value = 880; g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.35, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
+        o.connect(g); g.connect(audio.destination); o.start(t); o.stop(t + 0.25);
+      });
+    } catch (e) {}
+    try { if (navigator.vibrate) navigator.vibrate([200, 100, 200]); } catch (e) {}
+  }
+  function anyRunning() { return Object.keys(timers).some(function (k) { return timers[k].st === "run"; }); }
+  function syncLock() {
+    try {
+      if (anyRunning() && !lock && navigator.wakeLock) navigator.wakeLock.request("screen").then(function (l) { lock = l; l.addEventListener("release", function () { lock = null; }); }, function () {});
+      else if (!anyRunning() && lock) { lock.release(); lock = null; }
+    } catch (e) {}
+  }
+
+  // ---------- Cronômetro ----------
+  function startTimer(id) {
+    var s = steps.filter(function (x) { return x.id === id; })[0]; if (!s || !secOf(s)) return;
+    ensureAudio(); var t = T(id);
+    t.left = (t.st === "pause" && t.left > 0) ? t.left : secOf(s);
+    t.endAt = Date.now() + t.left * 1000; t.st = "run"; syncLock(); renderAll();
+  }
+  function pauseTimer(id) { var t = T(id); if (t.st !== "run") return; t.left = Math.max(0, (t.endAt - Date.now()) / 1000); t.st = "pause"; syncLock(); renderAll(); }
+  function resetTimer(id) { var t = T(id); t.st = "idle"; t.left = 0; syncLock(); renderAll(); }
+  function tick() {
+    var changed = false;
+    Object.keys(timers).forEach(function (id) {
+      var t = timers[id]; if (t.st !== "run") return;
+      var left = (t.endAt - Date.now()) / 1000;
+      if (left <= 0) { t.st = "end"; t.left = 0; changed = true; beep(); } else t.left = left;
+    });
+    if (changed) { syncLock(); renderAll(); var cp = $("curPanel"); cp.classList.remove("endflash"); void cp.offsetWidth; cp.classList.add("endflash"); }
+    else updateLive();
+  }
+  function updateLive() {
+    var ci = curIndex(), s = ci >= 0 ? steps[ci] : null;
+    if (s && secOf(s)) {
+      var t = T(s.id), total = secOf(s), left = t.st === "run" ? Math.max(0, (t.endAt - Date.now()) / 1000) : (t.st === "pause" ? t.left : (t.st === "end" ? 0 : total));
+      var num = $("ringNum"), fg = $("ringFg");
+      if (num) num.textContent = fmt(left);
+      if (fg) fg.style.strokeDashoffset = String(339.29 * (1 - left / total));
+    }
+    var rn = $("running"); if (rn) rn.querySelectorAll("[data-live]").forEach(function (el) { var t = timers[el.getAttribute("data-live")]; if (t && t.st === "run") el.textContent = fmt((t.endAt - Date.now()) / 1000); });
+    var run = anyRunning(); document.title = run ? "Cimentação em andamento" : "Checklist de Cimentação";
+  }
+
+  // ---------- Ações ----------
+  function complete(id) {
+    var p = P(id); p.done = true; p.at = Date.now();
+    var t = T(id); if (t.st === "run" || t.st === "pause") { t.st = "idle"; syncLock(); }
+    renderAll();
+  }
+  function toggleDone(id) { var p = P(id); if (p.done) { p.done = false; p.at = 0; } else { p.done = true; p.at = Date.now(); } renderAll(); }
+
+  // ---------- Renderização ----------
+  function renderCurrent() {
+    var ci = curIndex(), el = $("curPanel");
+    if (ci < 0) {
+      el.innerHTML = '<div class="done-card"><h3>Cimentação concluída</h3><p class="note" style="margin:0 0 16px">Todas as etapas foram marcadas. Copie o registro para o prontuário.</p><button type="button" class="primary big" data-act="copy">Copiar registro</button></div>';
+      return;
+    }
+    var s = steps[ci], t = T(s.id), p = P(s.id), tt = teeth(), sec = secOf(s), ph = PHASES.filter(function (x) { return x.id === s.phase; })[0];
+    var h = '<p class="phaselabel">' + esc(ph ? ph.label : "") + " &middot; etapa " + (ci + 1) + " de " + steps.length + "</p>";
+    h += "<h3>" + esc(s.title) + "</h3>";
+    if (s.detail) h += '<p class="detail">' + esc(s.detail) + "</p>";
+    if (s.tooth && tt.length) {
+      h += '<div class="teeth" role="group" aria-label="Dentes desta etapa">';
+      tt.forEach(function (d) { h += '<button type="button" class="tooth" data-act="tooth" data-id="' + esc(s.id) + '" data-t="' + esc(d) + '" aria-pressed="' + (!!p.teeth[d]) + '">' + esc(d) + "</button>"; });
+      h += "</div>";
+    }
+    if (sec) {
+      var total = sec, left = t.st === "run" ? Math.max(0, (t.endAt - Date.now()) / 1000) : (t.st === "pause" ? t.left : (t.st === "end" ? 0 : total));
+      h += '<div class="timerbox"><div class="ring ' + (t.st === "end" ? "end" : "") + '"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="bg" cx="60" cy="60" r="54"/><circle class="fg" id="ringFg" cx="60" cy="60" r="54" stroke-dasharray="339.29" stroke-dashoffset="' + (339.29 * (1 - left / total)) + '"/></svg><div class="num" id="ringNum" role="timer">' + fmt(left) + "</div></div>";
+      h += '<div class="btnrow">';
+      if (t.st === "run") h += '<button type="button" class="big" data-act="pause" data-id="' + esc(s.id) + '">Pausar</button>';
+      else h += '<button type="button" class="primary big" data-act="start" data-id="' + esc(s.id) + '">' + (t.st === "pause" ? "Continuar" : (t.st === "end" ? "Repetir" : "Iniciar " + fmt(sec))) + "</button>";
+      if (t.st !== "idle") h += '<button type="button" class="ghost big" data-act="reset" data-id="' + esc(s.id) + '">Zerar</button>';
+      h += "</div></div>";
+      if (t.st === "end") h += '<p class="note" style="margin:-6px 0 12px;color:var(--ok);font-weight:600">Tempo concluído.</p>';
+    }
+    h += '<div class="btnrow"><button type="button" class="' + (sec && t.st !== "end" ? "" : "primary ") + 'big" data-act="done" data-id="' + esc(s.id) + '">Concluir e avançar</button>';
+    if (ci > 0) h += '<button type="button" class="ghost big" data-act="back">Voltar uma etapa</button>';
+    h += "</div>";
+    el.innerHTML = h;
+  }
+  function renderAll() {
+    renderCurrent();
+    var all = "", last = "", done = 0;
+    steps.forEach(function (s, i) {
+      if (s.phase !== last) { last = s.phase; var ph = PHASES.filter(function (x) { return x.id === s.phase; })[0]; all += '<li class="phasehead" style="list-style:none">' + esc(ph ? ph.label : s.phase) + "</li>"; }
+      var p = P(s.id), cur = curIndex() === i; if (p.done) done++;
+      all += '<li class="row-step' + (cur ? " current" : "") + (p.done ? " done" : "") + '"><button type="button" class="check" data-act="toggle" data-id="' + esc(s.id) + '" aria-pressed="' + p.done + '" aria-label="Marcar ' + esc(s.title) + '"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3.2L13 4.8"/></svg></button><div><div class="tt">' + esc(s.title) + "</div>" + (s.detail ? '<div class="dd">' + esc(s.detail) + "</div>" : "") + '</div><span class="secs">' + (secOf(s) ? fmt(secOf(s)) : "") + "</span></li>";
+    });
+    $("allSteps").innerHTML = all;
+    var pct = steps.length ? Math.round(done / steps.length * 100) : 0;
+    $("progText").textContent = done + " de " + steps.length + " etapas"; $("progPct").textContent = pct + "%"; $("progBar").style.width = pct + "%";
+    var rn = "", n = 0;
+    Object.keys(timers).forEach(function (id) {
+      var t = timers[id]; if (t.st !== "run" && t.st !== "pause") return;
+      var s = steps.filter(function (x) { return x.id === id; })[0]; if (!s) return; n++;
+      rn += '<div class="it"><span>' + esc(s.title) + "</span><b data-live=\"" + esc(id) + '">' + fmt(t.st === "run" ? (t.endAt - Date.now()) / 1000 : t.left) + (t.st === "pause" ? " (pausado)" : "") + "</b></div>";
+    });
+    $("running").innerHTML = n ? rn : '<p class="empty" style="margin:0">Nenhum cronômetro em andamento.</p>';
+    if (editing) renderEditor();
+  }
+
+  // ---------- Registro ----------
+  function logText() {
+    var d = new Date(), tt = teeth(), out = [];
+    out.push("Cimentação adesiva de lentes de contato dentais");
+    out.push("Caso: " + ($("caso").value.trim() || "sem identificação") + (tt.length ? " | Dentes: " + tt.join(", ") : "") + " | Data: " + pad(d.getDate()) + "/" + pad(d.getMonth() + 1) + "/" + d.getFullYear());
+    out.push("");
+    steps.forEach(function (s, i) {
+      var p = P(s.id), ph = PHASES.filter(function (x) { return x.id === s.phase; })[0];
+      var line = (i + 1) + ". [" + (ph ? ph.label : "") + "] " + s.title + (secOf(s) ? " (" + secOf(s) + " s)" : "") + ": " + (p.done ? "feito às " + hhmm(p.at) : "não registrado");
+      var td = Object.keys(p.teeth).filter(function (k) { return p.teeth[k]; });
+      if (s.tooth && td.length) line += " | dentes: " + td.join(", ");
+      out.push(line);
+    });
+    return out.join("\n");
+  }
+  function showLog() {
+    var box = $("logBox"); box.hidden = false; box.value = logText();
+    var ok = function () { box.placeholder = ""; }, fb = function () { box.focus(); box.select(); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(box.value).then(ok, fb); else fb();
+  }
+
+  // ---------- Editor do protocolo ----------
+  function renderEditor() {
+    var h = "";
+    PHASES.forEach(function (ph) {
+      h += '<p class="phasehead">' + esc(ph.label) + "</p>";
+      steps.forEach(function (s, i) {
+        if (s.phase !== ph.id) return;
+        h += '<div class="editrow"><div><label class="field" for="e-t-' + esc(s.id) + '">Etapa<input type="text" id="e-t-' + esc(s.id) + '" data-f="title" data-id="' + esc(s.id) + '" value="' + esc(s.title) + '"></label></div>' +
+          '<div><label class="field" for="e-s-' + esc(s.id) + '">Segundos<input type="number" min="0" step="1" id="e-s-' + esc(s.id) + '" data-f="sec" data-id="' + esc(s.id) + '" value="' + secOf(s) + '"></label></div>' +
+          '<div class="full"><label class="field" for="e-d-' + esc(s.id) + '">Detalhe, material e concentração<input type="text" id="e-d-' + esc(s.id) + '" data-f="detail" data-id="' + esc(s.id) + '" value="' + esc(s.detail) + '"></label></div>' +
+          '<div class="full tools"><label style="display:inline-flex;gap:6px;align-items:center"><input type="checkbox" data-f="tooth" data-id="' + esc(s.id) + '"' + (s.tooth ? " checked" : "") + '> marcar por dente</label>' +
+          '<button type="button" data-act="up" data-id="' + esc(s.id) + '">Subir</button><button type="button" data-act="down" data-id="' + esc(s.id) + '">Descer</button><button type="button" data-act="del" data-id="' + esc(s.id) + '">Remover</button></div></div>';
+      });
+      h += '<div style="margin:10px 0"><button type="button" data-act="add" data-ph="' + ph.id + '">Adicionar etapa em ' + esc(ph.label) + "</button></div>";
+    });
+    var ed = $("editor"), focusId = document.activeElement && document.activeElement.id;
+    ed.innerHTML = h;
+    if (focusId) { var f = document.getElementById(focusId); if (f) f.focus(); }
+  }
+  function move(id, dir) {
+    var i = steps.findIndex(function (s) { return s.id === id; }), j = i + dir;
+    if (i < 0 || j < 0 || j >= steps.length) return;
+    var a = steps[i], b = steps[j]; if (a.phase !== b.phase) return;
+    steps[i] = b; steps[j] = a; save(); renderAll();
+  }
+
+  // ---------- Eventos ----------
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-act]"); if (!b) return;
+    var act = b.getAttribute("data-act"), id = b.getAttribute("data-id");
+    if (act === "start") startTimer(id);
+    else if (act === "pause") pauseTimer(id);
+    else if (act === "reset") resetTimer(id);
+    else if (act === "done") complete(id);
+    else if (act === "toggle") toggleDone(id);
+    else if (act === "back") { var ci = curIndex(); var k = ci < 0 ? steps.length - 1 : ci - 1; if (k >= 0) { P(steps[k].id).done = false; renderAll(); } }
+    else if (act === "tooth") { var p = P(id), t = b.getAttribute("data-t"); p.teeth[t] = !p.teeth[t]; renderAll(); }
+    else if (act === "copy") showLog();
+    else if (act === "up") move(id, -1);
+    else if (act === "down") move(id, 1);
+    else if (act === "del") { steps = steps.filter(function (s) { return s.id !== id; }); save(); renderAll(); }
+    else if (act === "add") { steps.push({ id: "n" + Date.now(), phase: b.getAttribute("data-ph"), title: "Nova etapa", detail: "", sec: 0, tooth: false }); steps.sort(function (a, b2) { return PHASES.findIndex(function (x) { return x.id === a.phase; }) - PHASES.findIndex(function (x) { return x.id === b2.phase; }); }); save(); renderAll(); }
+  });
+  document.addEventListener("input", function (e) {
+    var f = e.target.getAttribute && e.target.getAttribute("data-f"); if (!f) return;
+    var id = e.target.getAttribute("data-id"), s = steps.filter(function (x) { return x.id === id; })[0]; if (!s) return;
+    if (f === "tooth") s.tooth = e.target.checked; else if (f === "sec") s.sec = Math.max(0, parseInt(e.target.value, 10) || 0); else s[f] = e.target.value;
+    save(); renderCurrentSafe();
+  });
+  function renderCurrentSafe() { renderCurrent(); var rn = $("allSteps"); updateAllSteps(); }
+  function updateAllSteps() { /* lista completa é refeita ao sair do campo */ }
+  document.addEventListener("change", function (e) { if (e.target.getAttribute && e.target.getAttribute("data-f")) renderAll(); });
+  $("dentes").addEventListener("input", renderCurrent);
+  $("btnCopy").addEventListener("click", showLog);
+  $("btnReset").addEventListener("click", function () { prog = {}; timers = {}; syncLock(); $("logBox").hidden = true; renderAll(); });
+  $("btnEdit").addEventListener("click", function () {
+    editing = !editing; this.setAttribute("aria-pressed", String(editing)); this.textContent = editing ? "Fechar edição" : "Editar protocolo";
+    $("editor").hidden = !editing; $("io").hidden = !editing; if (editing) renderEditor();
+  });
+  $("btnDefault").addEventListener("click", function () { steps = clone(DEFAULT); save(); prog = {}; timers = {}; syncLock(); renderAll(); });
+  $("btnExport").addEventListener("click", function () { var j = $("json"); j.value = JSON.stringify(steps, null, 1); j.focus(); j.select(); });
+  $("btnImport").addEventListener("click", function () {
+    try { var j = JSON.parse($("json").value); if (!Array.isArray(j) || !j.length) throw 0; steps = j.map(function (s, i) { return { id: s.id || ("i" + i), phase: s.phase || "peca", title: String(s.title || "Etapa"), detail: String(s.detail || ""), sec: Math.max(0, parseInt(s.sec, 10) || 0), tooth: !!s.tooth }; }); save(); prog = {}; timers = {}; renderAll(); }
+    catch (err) { $("json").value = "Texto inválido. Cole o conteúdo exportado por este programa."; }
+  });
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) { tick(); syncLock(); } });
+
+  window.__cim = { steps: function () { return steps; }, timers: timers, tick: tick };
+  renderAll(); setInterval(tick, 250);
+})();
+
+</script>
+</body>
+</html>
