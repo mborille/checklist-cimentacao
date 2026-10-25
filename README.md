@@ -1,5 +1,9 @@
 # Checklist de Cimentação (checklist-cimentacao)
 
+Abrir no navegador: [mborille.github.io/checklist-cimentacao/checklist-cimentacao.html](https://mborille.github.io/checklist-cimentacao/checklist-cimentacao.html)
+
+Versão arquivada e citável: [DOI 10.6084/m9.figshare.34702281](https://doi.org/10.6084/m9.figshare.34702281)
+
 Roteiro interativo para a cimentação adesiva de lentes de contato dentais, com cronômetro por etapa, marcação por dente, protocolo editável e registro para copiar.
 
 ## Aviso importante
